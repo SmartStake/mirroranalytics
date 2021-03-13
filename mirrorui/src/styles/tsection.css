@@ -1,0 +1,39 @@
+/* styles related to sections */
+
+.sectionTitle {
+  font-weight: bold;
+  font-size: 18px;
+  padding-top: 15px;
+  border-top: 1px black solid;
+}
+
+.compTitle {
+  width: 100%;
+  font-weight: bold;
+  text-decoration: underline;
+  padding-left: 10px;
+  color: white;
+  /* display: inline-block; */
+} 
+
+.compSubTitle {
+  text-align: center;
+}
+
+.disclaimerText {
+  margin-bottom: 0rem;
+  font-size: 0.7em;
+}
+
+.customCardText {
+  /* font-weight: normal; */
+  font-size: 12px;
+  margin-bottom: 0.4rem;
+}
+
+.customCard {
+  /* font-weight: normal; */
+  /* padding: 1.2rem; */
+  /* padding-left: 20px; */
+  border-radius: 20px;
+}

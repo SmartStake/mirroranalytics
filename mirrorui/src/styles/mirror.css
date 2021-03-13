@@ -1,0 +1,19 @@
+.headerRow {
+    padding: 0px 0px;
+    margin: 0px 0px;
+    width: 100%;
+}
+
+.headerTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    width: 60%;
+    display: inline-block;
+}
+
+.headerActions {
+    width: 40%;
+    display: inline-block;
+    text-align: right;
+}
+

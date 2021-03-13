@@ -1,0 +1,24 @@
+
+.leftAlignComp {
+    width: 55%;
+    text-align: left;
+    display: inline-block;
+}
+
+.middleComp {
+    width: 39%;
+    text-align: left;
+    display: inline-block;
+}
+
+.rightAlignComp {
+    width: 6%;
+    text-align: center;
+    display: inline-block;
+}
+
+
+
+.recharts-tooltip-wrapper {
+    background-color: black;
+}

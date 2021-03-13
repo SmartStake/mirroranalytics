@@ -1,0 +1,316 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin:0.2rem;
+  padding:0.2rem;
+  background-color: #ffffff;
+}
+  /* background-color: #121a2f; */
+  /* color: white; */
+  /* display: flex; */
+
+.containerLayout {
+  /* flex-direction: row;
+  width: 100%;
+  align-items: center;  
+  justify-content: space-evenly;
+  display: flex; */
+  padding-right: 0rem;
+  padding-left: 0rem;
+  margin-left: 0rem;
+  margin-right: 0rem;
+}
+
+.statRowLayout {
+  /* width: 100%; */
+  padding-right: 0rem;
+  padding-left: 0rem;
+  margin-left: 0rem;
+  margin-right: 0rem; 
+}
+
+.statColLayout {
+  padding-right: 0.2rem;
+  padding-left: 0.2rem;
+  margin-left: 0rem;
+  margin-right: 0rem; 
+}
+
+.infoTooltip {
+  /* background-color: #2a3b69!important;*/
+  font-size: 1.1rem!important; 
+  /* font-weight: 600; */
+  /* background-color: #151e36!important; */
+  background-color: white!important;
+  color: black!important;
+}
+
+/* IF layout issues happen with charts, look here */
+.chartBg {
+  /* 23335F */
+  box-sizing: border-box;
+  background-color: #2d4075;
+  /* background-color: #f9f9f9; */
+  border-radius: 25px;
+  margin-top: 10px;
+	margin-bottom: 10px;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  box-shadow: 3px 3px 3px 3px #4460ad;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.headerWarning {
+  background-color: red;
+}
+
+.black-a {
+  color: #000;
+  text-decoration: underline;
+}
+
+.black-a:hover {
+   color: #00F
+}
+
+
+.animLink {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+  color: white;
+  transition: transform 0.2s; border-color: 0.2s; color: 0.2s; box-shadow: 0.2s;
+}
+
+.animLink:hover {
+  border-color: #f1ff5c;
+  color: rgb(247, 115, 115);
+  box-shadow: 0 0.5em 0.5em -0.4em #e6f543;
+  transform: translateY(-0.15em);
+  cursor: pointer;
+}
+
+.MuiToggleButtonGroup-root {
+  background-color: #2d4075;
+  color: white!important;
+}
+
+.MuiToggleButton-root {
+  background-color: #2d4075;
+  color: white!important;
+}
+
+/*.MuiToggleButton-root.Mui-selected {
+  background-color: purple;
+} */
+
+.notification {
+  background-color: #2d4075;
+  color: white;
+  padding-top: 0px;
+  padding-left: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  border-radius: 0.2rem;
+  text-decoration: underline;
+}
+
+
+/*
+
+.table th{
+  padding:.25rem;
+}
+
+.table td{
+  padding:.25rem;
+}
+
+.App-header {
+  background-color: #222;
+  height: 70px;
+  padding: 3px;
+  color: white;
+  text-align: center;
+}
+
+.App {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #121a2f;
+}
+
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.white-a {
+  color: #FFF;
+  text-decoration: underline;
+}
+
+.white-a:hover {
+   color: lightgray
+}
+
+
+.regular-b-a {
+  color: #000;
+}
+
+.regular-b-a:hover {
+   color: #00F
+}
+
+.regular-w-a {
+  color: #FFF;
+}
+
+.regular-w-a:hover {
+   color: #00F
+}
+
+.buttonWithText {
+  float: right;
+}
+
+.pWithText {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+
+.divWithText {
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+}
+
+.img-valign {
+  vertical-align: bottom;
+  margin-bottom: 0.1em;
+}
+
+
+.view-tag {
+  background-color: #00ade8;
+  text-decoration: underline;
+  border-radius: 5px;
+  border: 1px solid #a5d24a;
+  color: white;
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+	margin-top: 5px;
+	margin-bottom: 5px;
+  margin-right: 7px;
+  padding: 3px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+
+
+.button-special {
+  background-color: #00ade8;
+  border-radius: 5px;
+  border: 1px;
+  color: #ffffff;
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+	margin-top: 1px;
+	margin-bottom: 1px;
+  margin-left: 1px;
+  margin-right: 1px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.button-special-large {
+  background-color: #00ade8;
+  border-radius: 5px;
+  border: 1px;
+  color: #ffffff;
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+	margin-top: 5px;
+	margin-bottom: 5px;
+  margin-left: 1px;
+  margin-right: 1px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.react-bootstrap-table:hover {
+  cursor: pointer;
+}
+
+
+.card-deck {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.chartBg {
+  background-color: #f9f9f9;
+  border-radius: 25px;
+  margin-top: 10px;
+	margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: 3px 3px 3px 3px grey;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  padding-left: 10px;
+}
+
+.blockBg {
+  background-color: midnightblue;
+  border-radius: 25px;
+  margin-top: 10px;
+	margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: 1px 1px 2px 2px grey;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 5px;
+  padding-left: 10px;
+}
+
+.ssSubtitle {
+  font-size: 0.5rem;
+}
+
+.subHeader {
+  margin-left: 10px;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+  background-color: #f0fafe;
+}
+.table-striped>tbody>tr:nth-child(even)>td,
+ .table-striped>tbody>tr:nth-child(even)>th {
+   background-color: #ffffff;
+} */
+

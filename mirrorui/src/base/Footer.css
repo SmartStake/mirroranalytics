@@ -1,0 +1,45 @@
+.compFooter {
+  margin-top: 15px;
+  width: 100%;
+  font-weight: bold;
+  text-decoration: underline;
+  padding-left: 10px;
+  color: black;
+  /* display: inline-block; */
+} 
+
+.leftFooter {
+  width: 45%;
+  text-align: left;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* .middleFooter {
+  width: 4%;
+  text-align: left;
+  display: inline-block;
+} */
+
+.rightFooter {
+  font-size: 0.8rem;
+  text-align: right;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+
+
+/* .react-bootstrap-table:hover {
+    cursor: pointer;
+} */
+
+/* .buttonWithText {
+  float: right;
+}
+
+.pWithText {
+  padding-left: 2rem;
+  padding-right: 2rem;
+} */
+
