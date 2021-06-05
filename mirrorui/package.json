@@ -46,13 +46,11 @@
     "source-map-explorer": "^2.4.2"
   },
   "devDependencies": {
-    "node-sass": "^5.0.0",
-    "react-scripts": "1.0.17",
-    "sass-loader": "^11.0.1"
+    "react-scripts": "1.0.17"
   },
   "scripts": {
     "start": "react-scripts start",
-    "buildweb": "react-scripts build,
+    "buildweb": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "eject": "react-scripts eject"
