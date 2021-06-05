@@ -24,5 +24,20 @@ export default {
     txCount: UIUtils.getTip("Number of daily transactions in the protocol. Latest date data is partial. All dates are in GMT."),
     apr: UIUtils.getTip("Change in staking apr for $MIR using governance staking. Latest date data is partial. All dates are in GMT."),
     collateralRatio: UIUtils.getTip("Net collateral ratio - overall collateral at network level for minting mAssets. Latest date data is partial. All dates are in GMT."),
-  }
+    marketCap: UIUtils.getTip("MIR Market Cap changes over time."),
+    mirPrice: UIUtils.getTip("MIR price changes over time."),
+  },
+  assets: {
+    assetList: UIUtils.getTip("List of available assets."),
+  },
+  asset: {
+    basicDetails: UIUtils.getTip("Basic details of the mAsset."),
+    aprDetails: UIUtils.getTip("APR details for staking LP tokens of the mAsset."),
+    priceDetails: UIUtils.getTip("Price and price deviation over 30 day timeframe."),
+    lpDetails: UIUtils.getTip("Usage stats of the mAsset."),
+    price: UIUtils.getTip("Price history & Oracle price history for the mAsset."),
+    priceDeviation: UIUtils.getTip("Standard deviation between the price and Oracle price of the mAsset."),
+    positions: UIUtils.getTip("Mint position, pool position, and LP staked position for the mAsset."),
+    ustPoolPosition: UIUtils.getTip("UST pool position for the mAsset."),
+  },
 };

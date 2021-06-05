@@ -10,31 +10,44 @@ class ChartTitle extends Component {
 
   render() {
     return (
-        <div className="compTitle">
-          <div className="leftAlignComp">{this.props.title}
-            &nbsp;
-            {MirrorUtils.getNetwork(this, true)}
-          </div>
-          <div className="middleComp">
-            {this.addDay()}
-            <button onClick={this.handleChart} value="W" className="animLink">W</button>
-            <button onClick={this.handleChart} value="M" className="animLink">M</button>
-            <button onClick={this.handleChart} value="Y" className="animLink">Y</button>
-            <button onClick={this.handleChart} value="All" className="animLink">All</button>
-          </div>
-          <div className="rightAlignComp"><Tooltip tip={this.props.tip} /></div>
+      <div className="chartHeader">
+        <div className="chartTitle">{this.props.title}
+          &nbsp;
+          <span> {MirrorUtils.getNetwork(this, true)} </span>
+          <div className="chartTooltip"><Tooltip tip={this.props.tip} /></div>
         </div>
+        <div className="timeframePicker">
+          {this.addDay()}
+          {this.addWeek()}
+          <button onClick={this.handleChart} value="M" className="animLink">M</button>
+          <button onClick={this.handleChart} value="Y" className="animLink">Y</button>
+          <button onClick={this.handleChart} value="All" className="animLink">All</button>
+        </div>
+      </div>
     );
   }
 
   addDay() {
     // console.log(this.props.disableDay);
-    if (this.props.disableDay === 'false') {
+    if (this.props.disableDay === 'false' || this.props.disableDay === false) {
       return (<button onClick={this.handleChart} value="D" className="animLink">D</button>);
     }
     
     return "";
   }
+
+  addWeek() {
+    // console.log(this.props.disableDay);
+    if (this.props.disableWeek === 'false' || this.props.disableWeek === false) {
+      return (
+        <button onClick={this.handleChart} value="W" className="animLink">W</button>
+      );
+    }
+    
+    return "";
+  }
+
+
 
   handleChart(e) {
     // alert(e.target.value);

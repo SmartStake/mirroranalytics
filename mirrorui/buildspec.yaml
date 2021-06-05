@@ -9,7 +9,7 @@ phases:
     commands:
       - npm install
       # - npm run webpack
-      - npm run buildweb && aws s3 sync build/ s3://xxxx
+      - npm run buildweb && aws s3 sync build/ s3://vrem
 artifacts:
   files:
     - build/*

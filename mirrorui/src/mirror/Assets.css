@@ -1,0 +1,48 @@
+.customSettingsGroup {
+    width: 100%!important;
+}
+
+.customSettingsButton {
+    width: 100%!important;
+    text-align: left;
+}
+
+.delegateWithUs {
+    /* background-color: var(--color-background)!important; */
+    color: var(--color-text)!important;
+    /* background-color: "black"; */
+}
+
+.delegateWithUs .modal-content {
+    background-color: var(--color-background)!important;
+    color: var(--color-text)!important;
+    /* background-color: "black"; */
+}
+
+.close {
+    color: #fff;
+}
+
+.close:hover {
+    color: #aaa;
+}
+
+/* 
+table thead .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid \9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+    
+table thead .dropup .caret, table thead .navbar-fixed-bottom .dropdown .caret {
+    border-top: 0;
+    border-bottom: 4px dashed;
+    border-bottom: 4px solid \9;
+    content: "";
+} */

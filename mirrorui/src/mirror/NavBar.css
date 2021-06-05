@@ -9,8 +9,9 @@
 
 .customNavBar {
   /* background-color: #ffffff; */
-  background-color: #2d4075;
+  background-color: var(--color-smart-main-surface);
   margin-left: auto!important;
+  padding: 1em;
 }
 
 .customNavLink {
@@ -20,14 +21,12 @@
   cursor:pointer;
   overflow: hidden;
   outline:none;
-  color: white!important;
+  color: var(--color-text)!important;
   transition: transform 0.2s; border-color: 0.2s; color: 0.2s; box-shadow: 0.2s;
 }
 
 .customNavLink:hover {
-  border-color: #f1ff5c;
-  color: rgb(247, 115, 115)!important;
-  box-shadow: 0 0.5em 0.5em -0.4em #e6f543;
+  color: var(--color-smart-primary-bright) !important;
   transform: translateY(-0.15em);
   cursor: pointer;
 }

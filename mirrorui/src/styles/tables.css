@@ -1,0 +1,37 @@
+.sectionBg table {
+    color: var(--color-text)!important;
+    background-color: var(--color-smart-main-surface);
+    table-layout: auto;
+    border: None;
+    width: 100%;
+}
+  
+.sectionBg tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    margin: 10px 10px;
+    padding: 10px 10px;
+}
+  
+.sectionBg th {
+    border-top: 1px solid var(--color-text)!important;
+    border-bottom: 1px solid var(--color-text)!important;
+    padding: 0.75rem;
+} 
+  
+.sectionBg th,td {
+    border-left: None;
+    border-right: None;
+    border-bottom: 1px solid var(--color-text)!important;
+    padding: 0.75rem;
+} 
+  
+.sorting-desc {
+    background-color: var(--color-background);
+}
+
+.sorting-asc {
+    background-color: var(--color-background);
+}
+

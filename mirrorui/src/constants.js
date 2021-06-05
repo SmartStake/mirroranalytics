@@ -1,4 +1,26 @@
 export default {
+  colors: {
+    text: "white",
+    chartColor1: "darkgray",
+    chartColor2: "lightblue",
+    chartColor3: "lightgreen",
+    chartColor4: "#faa84b",
+    chartColor5: "yellow",
+    chartColor6: "purple",
+    chartColor7: "green",
+    chartColor8: "blue",
+    chartColor9: "lightgray",
+    chartColorBright: "red",
+
+    "--color-text": "white",
+    "--color-text-gray": "#6d738c",
+    "--color-background": "#212024",
+    "--color-smart-primary": "#faa84c",
+    "--color-smart-primary-bright": "#ffc107",
+    "--color-smart-main-surface": "#0f1011",
+    "--color-smart-main-surface--accent": "#1b191b",
+    "--color-custom-surface": "#17141a",
+  },
   menuStyle:
     {borderRadius: '3px',  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
     background: 'rgba(255, 255, 255, 1)', padding: '2px 0',
@@ -10,5 +32,5 @@ export default {
   STAT_TYPE_COMBINE: "COMBINE",
   STAT_TYPE_TERRA: "TERRA",
   STAT_TYPE_ETH: "ETH",  
-
+  ASSETS_COLUMNS_KEY: "ASSETS_COLUMNS_KEY"
 };

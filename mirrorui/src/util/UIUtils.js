@@ -8,9 +8,9 @@ class UIUtils extends React.Component {
 
   static getResponsiveWidth(thisObj) {
     let width = "100%"
-    if (!thisObj.state.responsive) {
-      width =  window.innerWidth * 1.5;
-    }
+    // if (!thisObj.state.responsive) {
+    //   width =  window.innerWidth * 1.5;
+    // }
 
     return width;
   }
@@ -27,7 +27,8 @@ class UIUtils extends React.Component {
   }
 
   static getChartMargin(thisObj) {
-    let margin = {top: 10, right: 5, left: 15, bottom: 15};
+    let margin = {top: 10, right: 10, left: 15, bottom: 0};
+    // {top: 10, right: 5, left: 15, bottom: 15};
     if (thisObj.props.bigMargin) {
       margin = {top: 10, right: 25, left: 25, bottom: 15};
     }
@@ -37,7 +38,7 @@ class UIUtils extends React.Component {
 
   static getChartHeight(thisObj) {
     let height = 300;
-    if (thisObj.props.chartType == 'pool') {
+    if (thisObj.props && thisObj.props.chartType == 'pool') {
       if (window.innerHeight < 600) {
         height = 250;
       } else if (window.innerHeight < 1000) {

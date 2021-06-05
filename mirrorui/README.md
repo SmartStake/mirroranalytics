@@ -18,7 +18,7 @@ Template for config.js
 
     export default {
       constants: {
-        APP_HARMONY: "HARMONY",
+        APP_MIRROR: "MIRROR",
       },
 
       apiGateway: {

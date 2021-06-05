@@ -98,7 +98,6 @@ class App extends Component {
                 <DefaultRoutes childProps={childProps} />
               </main>
               <Footer/>
-              <Contact />
             </div>
           </div>
         </Fullscreen>
@@ -107,3 +106,5 @@ class App extends Component {
   }
 }
 export default App;
+
+// {/* <Contact /> */}

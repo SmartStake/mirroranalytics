@@ -57,6 +57,13 @@ function registerValidSW(swUrl) {
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
               console.log('New content is available; please refresh.');
+              // let result = confirm('New content is available; please refresh.');
+              // if (result === 'OK') {
+              //   console.log("reloading dashboard");
+              //   window.reload();
+              // } else {
+              //   console.log("not reloading dashboard");
+              // }
               // alert("There is a new version available for the Dashboard; please hard refresh (Ctrl-F5/pull down).");
             } else {
               // At this point, everything has been precached.

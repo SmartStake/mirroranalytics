@@ -14,13 +14,16 @@ import BaseLineChart from "../charts/BaseLineChart";
 import ChartUtils from '../util/ChartUtils';
 import CoinUtils from '../util/CoinUtils';
 import FilterUtils from '../util/FilterUtils';
-import SPUtilities from '../util/SPUtilities';
 import constants from '../constants';
 import SPCalc from '../util/SPCalc';
+import LastUpdated from '../components/LastUpdated';
+import MultiLineChart from '../charts/MultiLineChart';
+// import BaseLineChartZoom from '../charts/BaseLineChartZoom';
 
 
 const MODE_DATE = "D";
 const MODE_HOUR = "H";
+const MODE_MIN = "M";
 const FREQ_ALL = "All";
 const FREQ_ANNUAL = "Y";
 const FREQ_MONTH = "M";
@@ -61,6 +64,8 @@ class Home extends React.Component {
     this.handleChartGovApr = this.handleChartGovApr.bind(this);
     this.handleChartCollateral = this.handleChartCollateral.bind(this);
     this.handleNetworkChange = this.handleNetworkChange.bind(this);
+    this.handleChartMirPrice = this.handleChartMirPrice.bind(this);
+    this.handleChartMirMcap = this.handleChartMirMcap.bind(this);   
   }
  
   async componentDidMount() {
@@ -68,7 +73,7 @@ class Home extends React.Component {
   }
 
   async prepareData(statType, mode, frequency) {
-    let params = "&mode=" + mode + "&statType=" + statType;
+    let params = "&mode=" + mode + "&statType=" + statType + "&frequency=" + frequency;
     const allData = await ApiUtils.get("listData?type=statSummary" + params);
     // console.log("allData is:", allData);
 
@@ -76,46 +81,31 @@ class Home extends React.Component {
       let lastUpdated = allData["lastUpdated"];
       let notification = allData["notification"];
       let currentStats = allData["allStats"][statType];
-      let statHistory = allData["statHistoryMap"][statType];
-      this.filterData(mode, frequency, statHistory);
+      let statHistory = allData["statHistory"];
+      let mirStatHistory = allData["mirStatHistory"];
+      // let statHistory = allData["statHistoryMap"][statType];
+      // this.filterData(mode, frequency, statHistory);
       // console.log("notification: ", notification);
-
+      let dateOnlyStats = statHistory;
+      // console.log(mode);
+      if (mode != MODE_DATE) {
+        dateOnlyStats = FilterUtils.retainLastStatPerDay(statHistory, "syncTime");
+      }
+  
       let latest24hActiveUsers = "N/A";
       if (statType != constants.STAT_TYPE_ETH) {
         latest24hActiveUsers = CoinUtils.formatCoins(currentStats.latest24hActiveUsers);
       }
-
+      // "statHistory": allData["statHistory"], 
       this.setState({"lastUpdated": lastUpdated, "currentStats": currentStats,
         "notification": notification, "allStats": allData["allStats"],
-        "statHistoryMap": allData["statHistoryMap"], "coinStat": allData["coinStat"],
+        "statHistory": statHistory, "coinStat": allData["coinStat"],
+        "dateOnlyStats": dateOnlyStats, "frequency": frequency,
         "statType": statType, "mode": mode, "snapshotTime": allData["snapshotTime"],
         "isLoading": false, "latest24hActiveUsers": latest24hActiveUsers,
+        "mirStatHistory": mirStatHistory,
       });
     }
-  }
-
-  filterData(mode, frequency, statHistory) {
-    let finalStatHistory;
-    if (frequency === FREQ_ALL) {
-      finalStatHistory = statHistory;
-    } else if (frequency === FREQ_ANNUAL) {
-      finalStatHistory = FilterUtils.removeOldData(statHistory, "syncTime", FREQ_ANNUAL_DAYS);
-    } else if (frequency === FREQ_MONTH) {
-      finalStatHistory = FilterUtils.removeOldData(statHistory, "syncTime", FREQ_MONTH_DAYS);
-    } else if (frequency === FREQ_WEEK) {
-      finalStatHistory = FilterUtils.removeOldData(statHistory, "syncTime", FREQ_WEEK_DAYS);
-    } else if (frequency === FREQ_DAY) {
-      finalStatHistory = FilterUtils.removeOldData(statHistory, "syncTime", FREQ_DAY_DAYS);
-    } 
-
-    let dateOnlyStats = finalStatHistory;
-    // console.log(mode);
-    if (mode === MODE_HOUR) {
-      dateOnlyStats = FilterUtils.retainLastStatPerDay(finalStatHistory, "syncTime");
-    }
-
-    this.setState({"statHistory": finalStatHistory, "dateOnlyStats": dateOnlyStats,
-      "frequency": frequency});
   }
 
   handleNetworkChange = (newNetwork) => {
@@ -135,79 +125,160 @@ class Home extends React.Component {
         <ReactTooltip id="main" place="top" effect="float" multiline={true} className="infoTooltip" />
         {this.getSummary()}  
         {this.getCharts()}   
+        <LastUpdated thisObj={this} />
       </div>
     );
   }
   // range={Utilities.getRange(true, this.state.statHistory, "feeInK")}
   // className="containerLayout" 
   // <Container fluid>
+  // getOldCharts() {
+  //   return (
+  //     <Container fluid className="containerLayout container-fluid chartContainer">
+  //       <Row className="chartRow">
+  //         <Col md className="chartBg">
+  //           <BaseLineChart title="Total Value Locked" xAxis="Date" yAxis="TVL (millions)" disableDay="false" 
+  //               showVerticalLabel={false} valueAttr="totalValueLockedInMil" showTotalLabel={false} xAxisValueAttr="date"
+  //               data={this.state.statHistory} tip={tooltips.homeCharts.tvl} handleChart={this.handleChartTVL}
+  //               statType={this.state.statType} isOverallOnly={true} />
+  //         </Col>
+  //         <Col md className="chartBg">
+  //           <BaseLineChart title="mAsset Marketcap" xAxis="Date" yAxis="Marketcap (millions)" disableDay="false" 
+  //                 showVerticalLabel={false} valueAttr="mAssetMcapInMil" showTotalLabel={false} xAxisValueAttr="date"
+  //                 data={this.state.statHistory} tip={tooltips.homeCharts.mAssetMcap} handleChart={this.handleChartMAssetMcap}
+  //                 statType={this.state.statType} isOverallOnly={true} />
+  //         </Col>
+  //       </Row>
+  //       <Row className="chartRow">
+  //         <Col md className="chartBg">
+  //           {ChartUtils.renderMultiLines(this, "Volume", this.state.dateOnlyStats,
+  //                   "date", ["totalVolumeInMil", "mirVolumeInMil"],
+  //                   "totalVolumeInMil", null, tooltips.homeCharts.volume, this.handleChartVolume, 
+  //                   true, this.state.statType, false)}
+  //         </Col>
+  //         <Col md className="chartBg">
+  //           <BaseLineChart title="Tx Fee" xAxis="Date" yAxis="Tx Fee ('000s)" disableDay="true" 
+  //               showVerticalLabel={false} valueAttr="feeInK" showTotalLabel={false} xAxisValueAttr="date"
+  //               data={this.state.dateOnlyStats} tip={tooltips.homeCharts.fee} handleChart={this.handleChartTxFee}
+  //               statType={this.state.statType} isOverallOnly={false} />
+  //         </Col>
+  //       </Row>
+  //       {this.getNonEthCharts()}
+  //       <Row className="chartRow">
+  //         <Col md className="chartBg">
+  //           <BaseLineChart title="Tx Count" xAxis="Date" yAxis="Transactions" disableDay="true" 
+  //                   showVerticalLabel={false} valueAttr="txCountInK" showTotalLabel={false} xAxisValueAttr="date"
+  //                   data={this.state.dateOnlyStats} tip={tooltips.homeCharts.txCount} handleChart={this.handleChartTx}
+  //                   statType={this.state.statType} isOverallOnly={false} />
+  //         </Col>
+  //         <Col md className="chartBg">
+  //           <BaseLineChart title="Collateral Ratio" xAxis="Date" yAxis="Collateral Ratio" disableDay="false" 
+  //                 showVerticalLabel={false} valueAttr="collateralRatioPercent" showTotalLabel={false} xAxisValueAttr="date"
+  //                 data={this.state.statHistory} tip={tooltips.homeCharts.collateralRatio} handleChart={this.handleChartCollateral}
+  //                 statType={this.state.statType} isOverallOnly={false} />
+  //         </Col>
+  //       </Row>
+  //     </Container>
+  //   )    
+  // }
+
   getCharts() {
     return (
-      <Container fluid>
-        <Row>
-          <Col md className="chartBg">
-            <BaseLineChart title="Total Value Locked" xAxis="Date" yAxis="TVL (millions)" disableDay="false" 
-                showVerticalLabel={false} valueAttr="totalValueLockedInMil" showTotalLabel={false} xAxisValueAttr="date"
-                data={this.state.statHistory} tip={tooltips.homeCharts.tvl} handleChart={this.handleChartTVL}
-                statType={this.state.statType} isOverallOnly={true} />
-          </Col>
-          <Col md className="chartBg">
-            <BaseLineChart title="mAsset Marketcap" xAxis="Date" yAxis="Marketcap (millions)" disableDay="false" 
-                  showVerticalLabel={false} valueAttr="mAssetMcapInMil" showTotalLabel={false} xAxisValueAttr="date"
-                  data={this.state.statHistory} tip={tooltips.homeCharts.mAssetMcap} handleChart={this.handleChartMAssetMcap}
-                  statType={this.state.statType} isOverallOnly={true} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md className="chartBg">
+      <Container fluid className="containerLayout container-fluid chartContainer">
+        <div class="chartGridContainer">
+          
+          <div class="chartBg">
+            <BaseLineChart title="Total Value Locked" xAxis="Date" yAxis="TVL" disableDay="false" disableWeek="false" 
+                    showVerticalLabel={false} valueAttr="totalValueLocked" showTotalLabel={false} xAxisValueAttr="date"
+                    data={this.state.statHistory} tip={tooltips.homeCharts.tvl} handleChart={this.handleChartTVL}
+                    statType={this.state.statType} isOverallOnly={true} formatValues={true} />
+          </div>
+
+
+          <div class="chartBg">
+            <BaseLineChart title="mAsset Marketcap" xAxis="Date" yAxis="Marketcap" disableDay="false" disableWeek="false" 
+                      showVerticalLabel={false} valueAttr="mAssetMcap" showTotalLabel={false} xAxisValueAttr="date"
+                      data={this.state.statHistory} tip={tooltips.homeCharts.mAssetMcap} handleChart={this.handleChartMAssetMcap}
+                      statType={this.state.statType} isOverallOnly={true} formatValues={true} />
+          </div>
+
+          <div class="chartBg">
+            <MultiLineChart title="Volume" xAxis="Date" yAxis="Marketcap" disableDay="false" disableWeek="false" 
+                      showVerticalLabel={false} valueAttr={["totalVolume", "mirVolume"]} showTotalLabel={false} xAxisValueAttr="date"
+                      data={this.state.dateOnlyStats} tip={tooltips.homeCharts.volume} handleChart={this.handleChartVolume}
+                      statType={this.state.statType} isOverallOnly={false} formatValues={true} />
+            {/* static renderMultiLines(thisObj, title, data, xAxisAttr, 
+              yAxisData, rangeAttr, 
+              subtitle, tooltip, handleChart, 
+              disableDay, statType, isOverallOnly, formatValues, disableWeek, zoomedRange) {
+
             {ChartUtils.renderMultiLines(this, "Volume", this.state.dateOnlyStats,
-                    "Date", "date", "Volume (millions)", ["totalVolumeInMil", "mirVolumeInMil"],
-                    "totalVolumeInMil", null, tooltips.homeCharts.volume, this.handleChartVolume, 
-                    true, this.state.statType, false)}
-          </Col>
-          <Col md className="chartBg">
-            <BaseLineChart title="Tx Fee" xAxis="Date" yAxis="Tx Fee ('000s)" disableDay="true" 
-                showVerticalLabel={false} valueAttr="feeInK" showTotalLabel={false} xAxisValueAttr="date"
-                data={this.state.dateOnlyStats} tip={tooltips.homeCharts.fee} handleChart={this.handleChartTxFee}
-                statType={this.state.statType} isOverallOnly={false} />
-          </Col>
-        </Row>
-        {this.getNonEthCharts()}
-        <Row>
-          <Col md className="chartBg">
-            <BaseLineChart title="Tx Count" xAxis="Date" yAxis="Transactions" disableDay="true" 
-                    showVerticalLabel={false} valueAttr="txCountInK" showTotalLabel={false} xAxisValueAttr="date"
-                    data={this.state.dateOnlyStats} tip={tooltips.homeCharts.txCount} handleChart={this.handleChartTx}
-                    statType={this.state.statType} isOverallOnly={false} />
-          </Col>
-          <Col md className="chartBg">
-            <BaseLineChart title="Collateral Ratio" xAxis="Date" yAxis="Collateral Ratio" disableDay="false" 
-                  showVerticalLabel={false} valueAttr="collateralRatioPercent" showTotalLabel={false} xAxisValueAttr="date"
-                  data={this.state.statHistory} tip={tooltips.homeCharts.collateralRatio} handleChart={this.handleChartCollateral}
-                  statType={this.state.statType} isOverallOnly={false} />
-          </Col>
-        </Row>
+                        "date", ["totalVolume", "mirVolume"],
+                        "totalVolume", null, tooltips.homeCharts.volume, this.handleChartVolume, 
+                        true, this.state.statType, false, true, false, false)} */}
+          </div>
+
+          <div class="chartBg">
+            <BaseLineChart title="Tx Fee" xAxis="Date" yAxis="Tx Fee" disableDay="true" disableWeek="false" 
+                    showVerticalLabel={false} valueAttr="fee" showTotalLabel={false} xAxisValueAttr="date"
+                    data={this.state.dateOnlyStats} tip={tooltips.homeCharts.fee} handleChart={this.handleChartTxFee}
+                    statType={this.state.statType} isOverallOnly={false} formatValues={true} />
+          </div>
+
+          {this.getNonEthCharts()}
+
+          <div class="chartBg">
+            <BaseLineChart title="Tx Count" xAxis="Date" yAxis="Transactions" disableDay="true" disableWeek="false" 
+                        showVerticalLabel={false} valueAttr="txCount" showTotalLabel={false} xAxisValueAttr="date"
+                        data={this.state.dateOnlyStats} tip={tooltips.homeCharts.txCount} handleChart={this.handleChartTx}
+                        statType={this.state.statType} isOverallOnly={false} formatValues={true} />
+          </div>
+
+          <div class="chartBg">
+            <BaseLineChart title="Collateral Ratio (%)" xAxis="Date" yAxis="Collateral Ratio" disableDay="false" disableWeek="false" 
+                      showVerticalLabel={false} valueAttr="collateralRatioPercent" showTotalLabel={false} xAxisValueAttr="date"
+                      data={this.state.statHistory} tip={tooltips.homeCharts.collateralRatio} handleChart={this.handleChartCollateral}
+                      statType={this.state.statType} isOverallOnly={false} formatValues={true} />
+          </div>
+
+          <div class="chartBg">
+            <BaseLineChart title="MIR Price (USD)" xAxis="Date" yAxis="Price (USD)" disableDay="false" disableWeek="false" 
+                        showVerticalLabel={false} valueAttr="ustPrice" showTotalLabel={false} xAxisValueAttr="date"
+                        data={this.state.mirStatHistory} tip={tooltips.homeCharts.mirPrice} handleChart={this.handleChartMirPrice}
+                        statType={this.state.statType} isOverallOnly={true} formatValues={true} />
+          </div>
+
+          <div class="chartBg">
+            <BaseLineChart title="MIR Market Cap (USD)" xAxis="Date" yAxis="Market Cap (USD)" disableDay="false" disableWeek="false" 
+                        showVerticalLabel={false} valueAttr="ustMcap" showTotalLabel={false} xAxisValueAttr="date"
+                        data={this.state.mirStatHistory} tip={tooltips.homeCharts.marketCap} handleChart={this.handleChartMirMcap}
+                        statType={this.state.statType} isOverallOnly={true} formatValues={true} />
+          </div>
+
+        </div>
       </Container>
     )    
   }
 
+
   getNonEthCharts() {
     if (this.state.statType != constants.STAT_TYPE_ETH) {
       return (
-        <Row>
-          <Col md className="chartBg">
-            <BaseLineChart title="Active Users" xAxis="Date" yAxis="Users" disableDay="false" 
-                showVerticalLabel={false} valueAttr="activeUsers" showTotalLabel={false} xAxisValueAttr="date"
-                data={this.state.statHistory} tip={tooltips.homeCharts.activeUsers} handleChart={this.handleChartUsers} 
-                statType={this.state.statType} isOverallOnly={false} />
-          </Col>
-          <Col md className="chartBg">
-            <BaseLineChart title="Governance APR" xAxis="Date" yAxis="APR" disableDay="false" 
-                  showVerticalLabel={false} valueAttr="govApr" showTotalLabel={false} xAxisValueAttr="date"
-                  data={this.state.statHistory} tip={tooltips.homeCharts.apr} handleChart={this.handleChartGovApr}
-                  statType={this.state.statType} isOverallOnly={false} />
-          </Col>
-        </Row>
+        <React.Fragment>
+          <div class="chartBg">
+              <BaseLineChart title="Active Users" xAxis="Date" yAxis="Users" disableDay="false" disableWeek="false" 
+                  showVerticalLabel={false} valueAttr="activeUsers" showTotalLabel={false} xAxisValueAttr="date"
+                  data={this.state.statHistory} tip={tooltips.homeCharts.activeUsers} handleChart={this.handleChartUsers} 
+                  statType={this.state.statType} isOverallOnly={false} formatValues={true} />
+          </div>
+
+          <div class="chartBg">
+            <BaseLineChart title="Governance APR (%)" xAxis="Date" yAxis="APR" disableDay="false" disableWeek="false" 
+            showVerticalLabel={false} valueAttr="govApr" showTotalLabel={false} xAxisValueAttr="date"
+            data={this.state.statHistory} tip={tooltips.homeCharts.apr} handleChart={this.handleChartGovApr}
+            statType={this.state.statType} isOverallOnly={false} formatValues={true} />
+          </div>
+        </React.Fragment>
       );
     }
 
@@ -221,53 +292,53 @@ class Home extends React.Component {
     return (
       <Container className="containerLayout" fluid>
         <Row className="statRowLayout">
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="mAsset Market Cap" labelShort="mAsset MCap" value={CoinUtils.formatCoinsUst(this.state.currentStats.assetMarketCap)} 
               info={tooltips.home.mcap} statType={this.state.statType} isOverallOnly={true} />
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Total Value Locked" value={CoinUtils.formatCoinsUst(this.state.currentStats.totalValueLocked)} 
               info={tooltips.home.totalValueLocked} statType={this.state.statType} isOverallOnly={true}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Tx Count - 24h" value={CoinUtils.formatCoins(this.state.currentStats.latest24hTransactions)} 
               info={tooltips.home.latest24hTransactions} statType={this.state.statType} isOverallOnly={false}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Collateral Ratio" value={CoinUtils.percentFormatter(this.state.currentStats.collateralRatio)} 
               info={tooltips.home.collateralRatio} statType={this.state.statType} isOverallOnly={false}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Governance APR" value={CoinUtils.percentFormatter(this.state.currentStats.govApr)} 
               info={tooltips.home.govApr} statType={this.state.statType} isOverallOnly={true}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Active Users - 24h" value={this.state.latest24hActiveUsers} 
               info={tooltips.home.latest24hActiveUsers} statType={this.state.statType} isOverallOnly={false}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Volume - 24h" value={CoinUtils.formatCoinsUst(this.state.currentStats.latest24hVolume)} 
               info={tooltips.home.latest24hVolume} statType={this.state.statType} isOverallOnly={false}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="MIR Volume - 24h" value={CoinUtils.formatCoinsUst(this.state.currentStats.latest24hMirVolume)} 
               info={tooltips.home.latest24hMirVolume} statType={this.state.statType} isOverallOnly={false}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Tx Fee - 24h" value={CoinUtils.formatCoinsUst(this.state.currentStats.latest24hFeeVolume)} 
               info={tooltips.home.latest24hFeeVolume} statType={this.state.statType} isOverallOnly={false}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Circulating Supply" value={CoinUtils.formatCoinsMir(this.state.currentStats.mirCirculatingSupply)} 
               info={tooltips.home.mirCirculatingSupply.replace("$value1", this.state.currentStats.mirCirculatingSupply)}
               statType={this.state.statType} isOverallOnly={true}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Total Supply" value={CoinUtils.formatCoinsMir(this.state.currentStats.mirTotalSupply)} 
               info={tooltips.home.mirTotalSupply.replace("$value1", this.state.currentStats.mirTotalSupply)}
               statType={this.state.statType} isOverallOnly={true}/>
           </Col>
-          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3}>
+          <Col className="statColLayout" xs={6} sm={6} md={4} lg={3} xl={3}>
             <Stat label="Next MIR Snapshot Time" labelShort="Next MIR Snapshot" link="https://terra.smartstake.io" target="_blank" 
               info={tooltips.home.nextMirAirdrop.replace("$value1", snapshotTime)} statType={this.state.statType} isOverallOnly={true}
               value={snapshotTime}/>
@@ -282,23 +353,38 @@ class Home extends React.Component {
     //   this.state.mode, ", freq: ", this.state.frequency, ", statType: ", this.state.statType);
     if (frequency == this.state.frequency) {
       //nothing changes
+      // console.log("nothing changes");
       return;
     }
 
     if (frequency === FREQ_ALL || frequency === FREQ_ANNUAL || frequency === FREQ_MONTH) {
-      if (this.state.mode != MODE_DATE) {
+      // console.log("preparing data for: ", this.state.statType, ", mode: ", MODE_DATE, ", frequency: ", frequency);
+      this.prepareData(this.state.statType, MODE_DATE, frequency);
+      /*if (this.state.mode != MODE_DATE) {
         this.prepareData(this.state.statType, MODE_DATE, frequency);
       } else {
         let statHistory = this.state.statHistoryMap[this.state.statType];
         this.filterData(this.state.mode, frequency, statHistory);
-      }
-    } else if (frequency === FREQ_WEEK || frequency === FREQ_DAY) {
-      if (this.state.mode != MODE_HOUR) {
+      }*/
+    } else if (frequency === FREQ_WEEK) {
+      // console.log("preparing data for: ", this.state.statType, ", mode: ", MODE_HOUR, ", frequency: ", frequency);
+      this.prepareData(this.state.statType, MODE_HOUR, frequency);
+      /*if (this.state.mode != MODE_HOUR) {
         this.prepareData(this.state.statType, MODE_HOUR, frequency);
       } else {
         let statHistory = this.state.statHistoryMap[this.state.statType];
         this.filterData(this.state.mode, frequency, statHistory);
-      }
+      }*/
+    } else {
+      //FREQ is day
+      // console.log("preparing data for: ", this.state.statType, ", mode: ", MODE_HOUR, ", frequency: ", frequency);
+      this.prepareData(this.state.statType, MODE_MIN, frequency);
+      /*if (this.state.mode != MODE_HOUR) {
+        this.prepareData(this.state.statType, MODE_HOUR, frequency);
+      } else {
+        let statHistory = this.state.statHistoryMap[this.state.statType];
+        this.filterData(this.state.mode, frequency, statHistory);
+      }*/
     }
   }
 
@@ -348,6 +434,15 @@ class Home extends React.Component {
   handleChartCollateral(frequency) {
     this.handleChartUpdate(frequency);
   }
+
+  handleChartMirPrice(frequency) {
+    this.handleChartUpdate(frequency);
+  }
+
+  handleChartMirMcap(frequency) {
+    this.handleChartUpdate(frequency);
+  }
+
 }
 
 export default Home;

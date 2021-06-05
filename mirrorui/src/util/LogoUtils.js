@@ -11,7 +11,7 @@ class LogoUtils extends React.Component {
     if (large && RespUtils.isMobileView()) {
       size = 32;
     } else if (large) {
-      size = 32;
+      size = 64;
     } else if (RespUtils.isNotMobileView()) {
       size=20;
     }
@@ -19,27 +19,42 @@ class LogoUtils extends React.Component {
     return size;
   }
 
-  static logoFormatter(address, website, large) {
-    if (!address) return "";
+  static logoFormatter(logoName, symbol, large) {
+    if (!symbol) return "";
 
     let size = LogoUtils.getImageSize(large);
-    let imagePath = "/images/logo/"
+    let imagePath = "https://whitelist.mirror.finance/images/" + logoName + ".png"
     // console.log(imagePath);
+
     // return (<object type="image/png" width={size} height={size} data={imagePath}>
     //   <img className="img-valign" width={size} height={size} src="images/logo/default.png" />
     // </object>);
+    
+    // return (<a className="black-a" target="_blank"
+    //   href={SPUtilities.getUrl(website)}><img onError={this.addDefaultSrc} className="img-valign"
+    //   width={size} height={size} src={imagePath}/></a>);
+    return (<img onError={this.addDefaultSrc} className="img-valign" id="mainLogo"
+      width={size} height={size} src={imagePath}/>);
 
-    return (<a className="black-a" target="_blank"
-      href={SPUtilities.getUrl(website)}><img onError={this.addDefaultSrc} className="img-valign"
-      width={size} height={size} src={imagePath}/></a>);
+  }
+
+  static summaryLogoFormatter(logoName, symbol, large) {
+    if (!symbol) return "";
+
+    let size = LogoUtils.getImageSize(large);
+    let imagePath = "https://whitelist.mirror.finance/images/" + logoName + ".png"
+    // console.log(imagePath);
+    return (<img onError={this.addDefaultSrc} className="img-valign"
+      width={size} height={size} src={imagePath}/>);
+
   }
 
   static addDefaultSrc(ev){
-    ev.target.src = "/images/default.png";
+    ev.target.src = "/images/blank.png";
   }
 
   static formatLogo(cell, row) {
-    return LogoUtils.logoFormatter(cell, row.website, false);
+    return LogoUtils.logoFormatter(cell, row.symbol, true);
   }
 
   static formatLogoFlag(cell, row) {

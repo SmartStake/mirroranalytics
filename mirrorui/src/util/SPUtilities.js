@@ -503,7 +503,7 @@ class SPUtilities extends React.Component {
       timezoneMsg = "All times are in GMT. "
     }
 
-    return (<p>Last updated - <b>{lastUpdated}</b> minutes ago. {timezoneMsg} {SPUtilities.getBotLink(addBotLink)}</p>);
+    return (<span class="lastUpdate">Last updated - <b>{lastUpdated}</b> minutes ago. {timezoneMsg} {SPUtilities.getBotLink(addBotLink)}</span>);
   }
 
   static getBotLink(addBotLink) {

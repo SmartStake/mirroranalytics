@@ -172,6 +172,16 @@ class CoinUtils extends React.Component {
 
       return CoinUtils.formatCoins(cell, row);
   }
+  
+  static formatCoinsRespUst(cell, row) {
+    // console.log(cell);
+    return CoinUtils.formatCoinsResp(cell) + " UST";
+  }
+
+  static formatCoinsRoundedUst(cell, row) {
+    // console.log(cell);
+    return CoinUtils.moneyFormatterPrecision(cell, 3) + " UST";
+  }
 
   static formatCoinsUst(cell, row) {
     return CoinUtils.formatCoinsResp(cell, row) + " UST";
@@ -179,6 +189,20 @@ class CoinUtils extends React.Component {
 
   static formatCoinsMir(cell, row) {
     return CoinUtils.formatCoinsResp(cell, row) + " MIR";
+  }
+
+  static formatPriceUst(cell, row) {
+    let price = SPCalc.roundPrecision(cell, 2);
+
+    if (!price) return "";
+
+    return price + " UST";
+  }
+
+  static moneyFormatterAsIs(amount) {
+    if (!amount) return "";
+
+    return Number(amount);
   }
 }
 

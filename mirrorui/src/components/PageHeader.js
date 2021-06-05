@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 
-import SPUtilities from "../util/SPUtilities";
 import UIUtils from "../util/UIUtils";
 import NetworkSwitch from './NetworkSwitch';
 
 class PageHeader extends Component {
+  // {/* {SPUtilities.getLastUpdated(this.props.thisObj, false, false)} */}
+
   render() {
     return (
         <div className="subHeader">
-          <p/>
-          <p className="headerRow">
-              <span className="headerTitle">{this.props.title}</span>
+            <div className="subHeader__group">
               {this.getNetworkSwitch()}
-          </p>
-          {SPUtilities.getLastUpdated(this.props.thisObj, false, false)}
-          {UIUtils.getNotification(this.props.thisObj.state.notification)}
+            </div>
+            {UIUtils.getNotification(this.props.thisObj.state.notification)}
         </div>
     );
   }

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import InfoIcon from '@material-ui/icons/Info';
 
 import "./Stat.css";
 import Tooltip from './Tooltip';
-import constants from "../constants";
 import MirrorUtils from '../mirror/MirrorUtils';
 import RespUtils from '../util/RespUtils';
 
@@ -14,8 +12,7 @@ class Stat extends Component {
       return (
         <div className="stat">
             <div className="statTitle">
-              <div className="statLabel">{this.getLabel()}</div>
-              <div className="statLabelTip"><Tooltip tip={this.props.info}/></div>
+              <div className="statLabel"><span class="textLabel"> {this.getLabel()} </span>  <div className="statLabelTip"><Tooltip tip={this.props.info}/></div> </div>
             </div>
             <p className="statValue">
               <a className="animLink" href={this.props.link} target={this.props.target}>{this.getValue()}</a>
@@ -27,11 +24,12 @@ class Stat extends Component {
     return (
         <div className="stat">
             <div className="statTitle">
-              <div className="statLabel">{this.getLabel()}</div>
-              <div className="statLabelTip"><Tooltip tip={this.props.info}/></div>
+              <div className="statLabel"><span class="textLabel"> {this.getLabel()} </span> <div className="statLabelTip"><Tooltip tip={this.props.info}/></div> </div>
+              <div class="network">
+              {MirrorUtils.getNetwork(this, false)}
+              </div>
             </div>
             <p className="statValue">{this.getValue()}</p>
-            {MirrorUtils.getNetwork(this, false)}
         </div>
     );
   }

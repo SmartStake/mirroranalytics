@@ -1,0 +1,17 @@
+.delegateLink {
+    font-size: 1rem;
+    /* border: 2px solid var(--color-smart-primary-bright); */
+    padding: 8px 8px;
+    border-radius: 5px;
+}
+  
+.pageTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) { 
+    .pageTitle {
+        width: 70%;
+    }
+}

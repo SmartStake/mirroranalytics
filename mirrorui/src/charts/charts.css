@@ -1,20 +1,34 @@
 
-.leftAlignComp {
-    width: 55%;
-    text-align: left;
-    display: inline-block;
+.chartHeader {
+    width: 100%;
+    font-weight: normal;
+    padding-left: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    /* background-color: #18141b; */
+    padding: 10px 0px;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid var(--color-text-gray);
 }
 
-.middleComp {
-    width: 39%;
+.chartTitle {
     text-align: left;
     display: inline-block;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
 }
 
-.rightAlignComp {
-    width: 6%;
-    text-align: center;
+.chartTooltip {
+    color: var(--color-text-gray);
+}
+
+.timeframePicker {
+    text-align: right;
     display: inline-block;
+    color: var(--color-text-gray);
+    flex: 1 1 auto;
 }
 
 

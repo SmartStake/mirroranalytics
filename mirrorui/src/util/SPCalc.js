@@ -209,6 +209,45 @@ class SPCalc extends React.Component {
 
     return value.toFixed(precision)
   }
+
+  static formatNumberValue(number) {
+    if (!number) {
+      return number;
+    }
+
+    let formattedValue = "";
+
+    // console.log(number);
+    // console.log(typeof number);
+    if (typeof number === 'string') {
+      if(number.indexOf(".") != -1) {
+        //float
+        number = parseFloat(number);
+      } else {
+        number = parseInt(number);
+      }
+    }
+
+    // console.log("final number: ");
+    // console.log(number);
+
+    if(number > 1000000000){
+      formattedValue = (number/1000000000).toFixed(3) + 'B';
+    }else if(number > 1000000){
+      formattedValue = (number/1000000).toFixed(3) + 'M';
+    }else if(number > 1000){
+      formattedValue = (number/1000).toFixed(3) + 'K';
+    }else{
+      // console.log("formatting number");
+      // console.log(number);
+      // console.log(typeof number);
+      formattedValue = number;
+    }
+
+    // console.log(formattedValue);
+    return formattedValue;
+  }
+
 }
 
 export default SPCalc;

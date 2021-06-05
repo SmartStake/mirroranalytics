@@ -476,6 +476,19 @@ class Utilities extends React.Component {
     return [domainMin, domainMax];
   }
 
+  static getRangeWithZoom(calc, thisObj) {
+    let range;
+    if (thisObj.props.zoomedRange === true) {
+      range = Utilities.getRange(calc, thisObj.props.data, thisObj.props.rangeAttr);
+      // console.log("range: ", range)
+    } else {
+      range = Utilities.getRangeWithBase0(calc, thisObj.props.data, thisObj.props.rangeAttr);      
+    }
+
+    return range;
+  }
+
+
   static getRange(calc, data, key) {
     let domainMin = "auto";
     let domainMax = "auto";

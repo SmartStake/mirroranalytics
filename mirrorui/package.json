@@ -52,7 +52,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "buildweb": "react-scripts build",
+    "buildweb": "react-scripts build,
     "test": "react-scripts test --env=jsdom",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "eject": "react-scripts eject"
